@@ -33,7 +33,4 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
         repository.deleteTransaction(transaction)
     }
 
-    /*fun getTransactionsByType(type: TransactionType) = repository.getTransactionsByType(type)
-    fun getTransactionsByCategory(category: String) = repository.getTransactionsByCategory(category)
-    fun getTransactionsBetweenDates(start: Date, end: Date) = repository.getTransactionsBetweenDates(start, end)*/
 }
