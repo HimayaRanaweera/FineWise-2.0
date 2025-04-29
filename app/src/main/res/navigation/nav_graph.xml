@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/transactionFragment">
+
+    <fragment
+        android:id="@+id/transactionFragment"
+        android:name="com.example.finewise2.ui.fragments.TransactionFragment"
+        android:label="Transactions" />
+
+    <fragment
+        android:id="@+id/analysisFragment"
+        android:name="com.example.finewise2.ui.fragments.AnalysisFragment"
+        android:label="Analysis" />
+
+    <fragment
+        android:id="@+id/budgetFragment"
+        android:name="com.example.finewise2.ui.fragments.BudgetFragment"
+        android:label="Budget" />
+
+    <fragment
+        android:id="@+id/exitFragment"
+        android:name="com.example.finewise2.ui.fragments.ExitFragment"
+        android:label="Exit" />
+
+</navigation>
