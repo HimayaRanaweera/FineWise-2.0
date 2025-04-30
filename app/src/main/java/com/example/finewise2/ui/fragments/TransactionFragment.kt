@@ -153,23 +153,42 @@ class TransactionFragment : Fragment() {
             .setView(dialogView)
             .setPositiveButton("Save") { _, _ ->
                 val title = titleEdit.text.toString()
-                val amount = amountEdit.text.toString().toDoubleOrNull() ?: 0.0
-                val category = categorySpinner.selectedItem?.toString() ?: "Other"
+                val amountText = amountEdit.text.toString()
                 val dateStr = dateEdit.text.toString()
-                val type = if (radioGroup.checkedRadioButtonId == R.id.radioIncome) com.example.finewise2.data.model.TransactionType.INCOME else com.example.finewise2.data.model.TransactionType.EXPENSE
-                val date = try {
-                    SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(dateStr) ?: Date()
-                } catch (e: Exception) {
-                    Date()
+
+                if (title.isBlank()) {
+                    Toast.makeText(requireContext(), "Title cannot be empty", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
                 }
+
+                val amount = amountText.toDoubleOrNull()
+                if (amount == null || amount <= 0) {
+                    Toast.makeText(requireContext(), "Enter a valid positive amount", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+
+                val date = try {
+                    SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(dateStr) ?: throw Exception("Invalid date")
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Invalid date format. Use yyyy-MM-dd", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+
+                val category = categorySpinner.selectedItem?.toString() ?: "Other"
+                val type = if (radioGroup.checkedRadioButtonId == R.id.radioIncome)
+                    TransactionType.INCOME else TransactionType.EXPENSE
+
                 val newTransaction = if (isEdit) {
                     transaction!!.copy(title = title, amount = amount, category = category, date = date, type = type)
                 } else {
-                    com.example.finewise2.data.model.Transaction(title = title, amount = amount, category = category, date = date, type = type)
+                    Transaction(title = title, amount = amount, category = category, date = date, type = type)
                 }
-                if (isEdit) transactionViewModel.update(newTransaction) else transactionViewModel.insert(newTransaction)
+
+                if (isEdit) transactionViewModel.update(newTransaction)
+                else transactionViewModel.insert(newTransaction)
                 editingTransaction = null
             }
+
             .setNegativeButton("Cancel") { _, _ -> editingTransaction = null }
             .show()
     }
